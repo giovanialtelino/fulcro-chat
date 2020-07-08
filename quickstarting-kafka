@@ -1,0 +1,70 @@
+#Starting zookeeper and kafka
+bin/zookeeper-server-start.sh config/zookeeper.properties
+bin/kafka-server-start.sh config/server.properties
+
+#To create the topics
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic user
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic message
+
+#check if they were created,
+bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+
+Should be fine, we will be using schema registry later, something like below
+
+{
+    "type": "user",
+    "namespace": "user",
+    "name": "User",
+    "doc": "Avro Schema for Users",
+    "fields": [
+        {
+            "name": "username",
+            "type": "string",
+            "doc": "User username"
+        },
+        {
+            "name": "password",
+            "type": "string",
+            "doc": "User hashed password"
+        },
+        {
+            "name": "registry_date",
+            "type": "date",
+            "doc": "registry date from the front-end"
+        }
+    ]
+}
+
+{
+    "type": "message",
+    "namespace": "message",
+    "name": "Message",
+    "doc": "Avro Schema for Messages",
+    "fields": [
+        {
+                   "name": "message",
+                   "type": "string",
+                   "doc": "Message itself"
+        },
+        {
+            "name": "username",
+            "type": "string",
+            "doc": "Message post username"
+        },
+        {
+            "name": "system_entry",
+            "type": "date",
+            "doc": "registry date from entry"
+        },
+        {
+            "name": "original_date",
+            "type": "date",
+            "doc": "registry date from the front-end"
+        },
+        {
+            "name": "quote",
+            "type": "string",
+            "doc": "detected @ from other users"
+        }
+    ]
+}
